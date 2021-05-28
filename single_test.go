@@ -9,13 +9,9 @@ import (
 	"git.900sui.cn/kc/kcgin/logs"
 	"git.900sui.cn/kc/rpcCards/common/logics"
 	"git.900sui.cn/kc/rpcCards/service"
-	"git.900sui.cn/kc/rpcinterface/client/bus"
 	cards2 "git.900sui.cn/kc/rpcinterface/client/cards"
-	"git.900sui.cn/kc/rpcinterface/client/user"
-	bus2 "git.900sui.cn/kc/rpcinterface/interface/bus"
 	"git.900sui.cn/kc/rpcinterface/interface/cards"
 	"git.900sui.cn/kc/rpcinterface/interface/common"
-	user2 "git.900sui.cn/kc/rpcinterface/interface/user"
 	"testing"
 )
 
@@ -34,33 +30,33 @@ func TestGetSingle(t *testing.T) {
 
 func TestAddSingle(t *testing.T) {
 	ctx := context.Background()
-	rpcUser := new(user.UserLogin).Init()
-	loginParams := user2.CheckLoginParams{
-		Channel: 1,
-		Token:   "YzJpYjczYWhnZGMyMmlwZWNhYjAxNjIxNDA2NjA1OTUyMjAwMDIy",
-	}
-	loginRep := user2.CheckLoginReply{}
-
-	rpcUser.CheckLogin(ctx, &loginParams, &loginRep)
-	rpcBus := new(bus.BusAuth).Init()
-	defer rpcBus.Close()
-	utoken := common.Utoken{UidEncodeStr: loginRep.UidEncodeStr}
-	args := bus2.ArgsBusAuth{
-		BusId:  1,
-		Utoken: utoken,
-	}
-	reply := bus2.ReplyBusAuth{}
-	rpcBus.BusAuth(ctx, &args, &reply)
-	bstoken := common.BsToken{EncodeStr: reply.EncodeStr}
+	// rpcUser := new(user.UserLogin).Init()
+	// loginParams := user2.CheckLoginParams{
+	// 	Channel: 1,
+	// 	Token:   "YzJvOGZuaWhnZGNmcm4xbGRramcxNjIyMTgxODU0MDc4ODA0MjM3",
+	// }
+	// loginRep := user2.CheckLoginReply{}
+	//
+	// rpcUser.CheckLogin(ctx, &loginParams, &loginRep)
+	// rpcBus := new(bus.BusAuth).Init()
+	// defer rpcBus.Close()
+	// utoken := common.Utoken{UidEncodeStr: loginRep.UidEncodeStr}
+	// args := bus2.ArgsBusAuth{
+	// 	BusId:  51,
+	// 	Utoken: utoken,
+	// }
+	// reply := bus2.ReplyBusAuth{}
+	// rpcBus.BusAuth(ctx, &args, &reply)
+	// bstoken := common.BsToken{EncodeStr: reply.EncodeStr}
 
 	mSingle := new(logics.SingleLogic)
 	singleInfo := cards.ArgsAddSingle{
-		BsToken: bstoken,
+		// BsToken: bstoken,
 		SingleBase: cards.SingleBase{
-			Name:        "context2021",
-			SortDesc:    "2011精油开背，放松自己2011",
+			Name:        "单项目001",
+			SortDesc:    "单项目001",
 			BindId:      7,
-			TagIds:      []int{1, 2},
+			// TagIds:      []int{1, 2},
 			RealPrice:   80,
 			Price:       100,
 			ServiceTime: 60,
@@ -85,16 +81,12 @@ func TestAddSingle(t *testing.T) {
 			// 	"Content": "222",
 			// },
 
-			SpecIds: []cards.SingleSpecIds{
-				{
-					SpecId: 1,
-					Sub:    []int{2},
-				},
-				{
-					SpecId: 5,
-					Sub:    []int{6, 7, 8},
-				},
-			},
+			// SpecIds: []cards.SingleSpecIds{
+			// 	{
+			// 		SpecId: 1,
+			// 		Sub:    []int{},
+			// 	},
+			// },
 			SpecPrices: []cards.SingleSpecPrice{
 				{
 					SpecIds: []int{7, 2},
@@ -114,7 +106,7 @@ func TestAddSingle(t *testing.T) {
 		},
 	}
 
-	logs.Info(mSingle.AddSingle(context.Background(), &singleInfo))
+	logs.Info(mSingle.AddSingle(ctx, &singleInfo))
 }
 
 func TestSingleInfo(t *testing.T) {

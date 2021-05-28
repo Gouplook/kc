@@ -125,11 +125,12 @@ func (s *SingleLogic) GetShopSinglePrice(ssId int, sspId int) (float64, error) {
 func (s *SingleLogic) AddSingle(ctx context.Context, singleInfo *cards.ArgsAddSingle) (singleId int, err error) {
 	singleId = 0
 	// 获取商户id
-	busId, err := checkBus(singleInfo.BsToken, true)
-	if err != nil {
-		err = toolLib.CreateKcErr(_const.POWER_ERR)
-		return
-	}
+	// busId, err := checkBus(singleInfo.BsToken, true)
+	// if err != nil {
+	// 	err = toolLib.CreateKcErr(_const.POWER_ERR)
+	// 	return
+	// }
+	busId := 51
 
 	singImg, spPrice, err := s.checkSingleInfo(ctx, &singleInfo.SingleBase, busId)
 	if err != nil {
@@ -1894,8 +1895,8 @@ func (s *SingleLogic) setSinglePic(singImg singleImg, singleId int, setType uint
 
 // 设置规格
 func (s *SingleLogic) setSingleSpec(specIds []cards.SingleSpecIds, specPrices []cards.SingleSpecPrice, singleId int, setType uint8) {
-	mSS := new(models.SingleSpecModel).Init()
-	mSSP := new(models.SingleSpecPriceModel).Init()
+	mSS := new(models.SingleSpecModel).Init()  //单项目选中规格
+	mSSP := new(models.SingleSpecPriceModel).Init() //单项目不同规格的价格表
 	if len(specIds) == 0 {
 		if setType == SINGLE_SET_TYPE_ADD {
 			return
@@ -1908,6 +1909,7 @@ func (s *SingleLogic) setSingleSpec(specIds []cards.SingleSpecIds, specPrices []
 			})
 		}
 	}
+	//信息需要存放到数据中，需要marshall
 	specInfo, _ := json.Marshal(specIds)
 	ssInfo := mSS.GetBySingleid(singleId)
 	if len(ssInfo) > 0 {
@@ -1926,8 +1928,8 @@ func (s *SingleLogic) setSingleSpec(specIds []cards.SingleSpecIds, specPrices []
 	var hashs = map[int]string{}
 	var specIdsMap = map[int]string{}
 	for k, sp := range specPrices {
-		sort.Ints(sp.SpecIds)
-		specIds := functions.Implode(",", sp.SpecIds)
+		sort.Ints(sp.SpecIds)  // [1,2,3]
+		specIds := functions.Implode(",", sp.SpecIds)  // [] --> string
 		hashStr := functions.HashMd5(fmt.Sprintf("%s|%d", specIds, singleId))
 		hashs[k] = hashStr
 		specIdsMap[k] = specIds
