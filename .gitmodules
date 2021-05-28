@@ -1,0 +1,3 @@
+[submodule "rpcinterface"]
+	path = rpcinterface
+	url = git@git.900sui.cn:kc/rpcinterface.git

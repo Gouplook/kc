@@ -1,0 +1,8 @@
+vendor
+output
+#conf/de
+*.exe
+.idea
+
+.DS_Store
+.history

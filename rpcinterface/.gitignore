@@ -1,0 +1,6 @@
+vendor
+output
+conf/dev*
+.idea
+*_test.go
+*.exe
